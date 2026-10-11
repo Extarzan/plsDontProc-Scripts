@@ -54,7 +54,7 @@ try {
     $clean.wizard_info['wizard_id'] = $identity.fake_id
     $clean.wizard_info['wizard_name'] = $identity.fake_name
     $bytes = $utf8.GetBytes((ConvertTo-Json -InputObject $clean -Depth 32 -Compress) + [Environment]::NewLine)
-    $destination = Write-NewJson $source.FullName $OutputPath $bytes
+    $destination = Write-NewJson $source.FullName $OutputPath $bytes $identity.fake_name
     if (-not $IdentityPath) {
         $IdentityPath = [IO.Path]::ChangeExtension($destination, '.identity.json')
         try {

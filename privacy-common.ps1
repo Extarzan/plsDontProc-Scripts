@@ -178,13 +178,20 @@ function Copy-Allowed($Value, [string]$Rule, [string]$Location) {
     return $result
 }
 
-function Write-NewJson([string]$SourcePath, [string]$Destination, [byte[]]$Bytes) {
+function Write-NewJson([string]$SourcePath, [string]$Destination, [byte[]]$Bytes, [string]$FakeName) {
     $automatic = [string]::IsNullOrWhiteSpace($Destination)
     $folder = [System.IO.Path]::GetDirectoryName($SourcePath)
+    if ($automatic) {
+        if ([string]::IsNullOrWhiteSpace($FakeName)) { throw 'Provide the fictitious name for the copy.' }
+        # Only the filename is sanitized; the chosen identity stays unchanged in JSON.
+        $stem = $FakeName.Trim() -replace '[<>:"/\\|?*\x00-\x1f]', '_'
+        $stem += '_clean_copy'
+        if ($stem -match '^(CON|PRN|AUX|NUL|COM[1-9\u00b9\u00b2\u00b3]|LPT[1-9\u00b9\u00b2\u00b3])\.') { $stem = '_' + $stem }
+    }
     $counter = 1
     while ($true) {
         if ($automatic) {
-            $name = if ($counter -eq 1) { 'plsdontproc-clean.json' } else { "plsdontproc-clean-$counter.json" }
+            $name = if ($counter -eq 1) { "$stem.json" } else { "$stem-$counter.json" }
             $Destination = [System.IO.Path]::Combine($folder, $name)
         }
         $Destination = [System.IO.Path]::GetFullPath($Destination)

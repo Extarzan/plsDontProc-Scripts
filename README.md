@@ -23,14 +23,17 @@ download and readable source links. Nothing runs automatically in `iniciar-dev`.
 2. Select the original JSON in the script's own picker.
 3. Enter a fictitious account name (1–48 characters) and a fictitious positive
    numeric ID (up to 9007199254740991, different from your real account ID).
-4. Import only the generated **`plsdontproc-clean.json`** into the app.
+4. Import **`<your fictitious name>_clean_copy.json`** into the app. For example,
+   entering `Tarzan` creates **`Tarzan_clean_copy.json`**.
 
 The copy is saved next to the original. Existing names receive `-2`, `-3`, etc.
+(for example, `Tarzan_clean_copy-2.json`). Characters Windows does not allow in
+filenames become `_` in the filename only; the name inside the JSON stays as entered.
 No file is overwritten. Your fictitious name and ID replace `wizard_name` and
 `wizard_id`; other occurrences of account identity are discarded by field
 allowlists. The output filename does not contain the original name or ID.
 
-The separate **`plsdontproc-clean.identity.json`** stores the fictitious identity
+The separate **`<your fictitious name>_clean_copy.identity.json`** stores the fictitious identity
 and a SHA-256 fingerprint of the original account ID so the log helper can
 recognize the correct account. It contains no original ID, name or source path
 in plain text. Keep it private: a fingerprint is not encryption and does not
@@ -126,10 +129,10 @@ updates and support features can use the network.
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\clean-json.ps1 -InputPath "C:\exports\account.json" -FakeName "Private Player" -FakeId 700001 -NonInteractive
 
 # Another export for the same fictitious identity.
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\clean-json.ps1 -InputPath "C:\exports\account.json" -IdentityPath "C:\exports\plsdontproc-clean.identity.json" -NonInteractive
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\clean-json.ps1 -InputPath "C:\exports\account.json" -IdentityPath "C:\exports\Private Player_clean_copy.identity.json" -NonInteractive
 
 # Continuous log copy (Ctrl+C stops it).
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\clean-full-log.ps1 -InputPath "C:\exports\full_log.txt" -IdentityPath "C:\exports\plsdontproc-clean.identity.json" -OutputPath "C:\filtered\public-log.txt" -NonInteractive
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\clean-full-log.ps1 -InputPath "C:\exports\full_log.txt" -IdentityPath "C:\exports\Private Player_clean_copy.identity.json" -OutputPath "C:\filtered\public-log.txt" -NonInteractive
 ```
 
 `-OutputPath` must name a new file with the appropriate extension in an existing
