@@ -1,0 +1,11 @@
+# Only source files belong here. Never commit account exports, identities or logs.
+*.json
+*.txt
+*.log
+*.zip
+*.tmp
+.env
+.env.*
+__pycache__/
+.DS_Store
+Thumbs.db
