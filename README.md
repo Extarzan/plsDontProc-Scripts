@@ -56,17 +56,25 @@ file belonging to another real account. Import the newly generated copy manually
    updates. The app keeps the last synchronized data.
 
 Each helper launch creates a new file (`-2`, `-3`, etc. if needed), which must be
-selected in the app. It starts from the beginning of the available source log,
-then follows appended data every second. No scheduled task or background service
-is installed. `-Once` makes a static filtered copy and exits.
+selected in the app. It finds the latest complete login snapshot for your account
+already present in the source log, filters from there, then follows appended data
+every second. This skips older history, including history from other accounts.
+The window shows **Up to date. Watching for new events.** when it catches up.
+No scheduled task or background service is installed. `-Once` makes a static
+filtered copy and exits. The command-line `-Resume` option can keep using an
+existing filtered copy with the same fictitious identity.
 
 The script writes complete request/response pairs, never half a JSON record.
 It handles UTF-8 split between writes and waits for incomplete lines. Events
 from other accounts are discarded before filtering; they are never relabeled
 as your account. Request and response IDs must agree when both are present.
 When the source is replaced, truncated or contains a malformed event, a reset
-record makes the app wait for a complete login snapshot. **Log in again through
-SWEX after a reset** to establish a trustworthy current inventory.
+record makes the app wait for a complete login snapshot. **You do not need to
+log in again just to start the helper or enable synchronization.** An existing
+snapshot and its subsequent events can establish the current inventory. Log in
+again through SWEX only if the app is still waiting for a snapshot because the
+available history is missing or incomplete. If no matching snapshot exists, the
+helper filters all available events and continues waiting for new ones.
 
 The helper reads the original locally; the application is given only its output.
 This is a filtered inventory stream, not a complete archival copy of FullLogger.
@@ -133,11 +141,16 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\clean-json.ps1 -InputP
 
 # Continuous log copy (Ctrl+C stops it).
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\clean-full-log.ps1 -InputPath "C:\exports\full_log.txt" -IdentityPath "C:\exports\Private Player_clean_copy.identity.json" -OutputPath "C:\filtered\public-log.txt" -NonInteractive
+
+# Restart using the same filtered copy already selected in the app.
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\clean-full-log.ps1 -InputPath "C:\exports\full_log.txt" -IdentityPath "C:\exports\Private Player_clean_copy.identity.json" -OutputPath "C:\filtered\public-log.txt" -Resume -NonInteractive
 ```
 
 `-OutputPath` must name a new file with the appropriate extension in an existing
-directory. Existing files and originals are refused. The execution-policy option
-applies only to that PowerShell process; it does not change Windows settings.
+directory. Existing files and originals are refused by default. With `-Resume`,
+the log helper validates the existing filtered copy and its fictitious identity,
+then appends without overwriting it. Stop the previous helper before resuming.
+The execution-policy option applies only to that PowerShell process; it does not change Windows settings.
 Organization-managed machines may have their own script restrictions.
 
 ## Source files

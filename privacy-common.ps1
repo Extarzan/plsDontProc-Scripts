@@ -301,9 +301,21 @@ function Show-PrivacyIdentity {
 # FullLogger uses the same inventory allowlists, plus only fields consumed by
 # live_events.py, drop_history.py and upgrade_history.py. Never copy raw requests.
 $Schemas['request'] = [ordered]@{
-    rune_id='integer'; rune_id_list='integer[]'; unit_id='integer'; unit_id_list='integer[]'
+    rune_id='integer'; rune_id_list='integer[]'; unit_id='integer'
     craft_item_id='integer'; craft_item_id_list='integer[]'; artifact_ids='integer[]'
     updates='occupation[]'; lock_type='integer'
+}
+# Only request fields actually consumed for that command. In particular,
+# unit_id_list can contain battle formations or conversion objects; neither
+# is needed to apply inventory changes from those commands' responses.
+$LogRequestFields = @{
+    SellRune=@('rune_id_list'); SellArtifacts=@('artifact_ids')
+    EquipRune=@('rune_id','unit_id'); UnequipRune=@('rune_id'); EquipRuneList=@('unit_id')
+    UpdateArtifactOccupation=@('updates')
+    LockRune=@('rune_id','lock_type'); UnlockRune=@('rune_id','lock_type')
+    AmplifyRune=@('craft_item_id'); AmplifyRune_v2=@('craft_item_id')
+    ConvertRune=@('craft_item_id'); ConvertRune_v2=@('craft_item_id')
+    SellRuneCraftItem=@('craft_item_id_list')
 }
 $Schemas['occupation'] = [ordered]@{rid='integer'; occupied_id='integer'}
 $Schemas['crate'] = [ordered]@{runes='rune[]'; rune='rune'; artifacts='artifact[]'; artifact='artifact'; changestones='material[]'}
@@ -340,7 +352,15 @@ function Convert-PrivateLogEvent($Request, $Response, $Identity) {
     foreach ($account in @($requestId, $responseId)) {
         if ($null -ne $account -and (Get-AccountHash $account.Value) -cne $Identity.source_hash) { return $null }
     }
-    $req = Copy-Allowed $Request 'request' 'request'
+    $req = [ordered]@{}
+    if ($LogRequestFields.ContainsKey($publicCommand)) {
+        foreach ($field in $LogRequestFields[$publicCommand]) {
+            $property = Get-JsonProperty $Request $field
+            if ($null -ne $property) {
+                $req[$field] = Copy-Allowed $property.Value $Schemas.request[$field] "request.$field"
+            }
+        }
+    }
     $resp = Copy-Allowed $Response 'response' 'response'
     $req['command'] = $publicCommand; $req['wizard_id'] = $Identity.fake_id
     $resp['command'] = $publicCommand
