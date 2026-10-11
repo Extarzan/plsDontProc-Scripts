@@ -1,10 +1,10 @@
 # plsDontProc Privacy Tools
 
-[Download the complete ZIP](https://github.com/Extarzan/plsdontproc-scripts/archive/refs/heads/main.zip),
-extract it, and keep all files together. Start with **`limpar-json.bat`**, then
-use **`limpar-full-log.bat`** if you want continuous synchronization.
+[Download the complete ZIP](https://github.com/Extarzan/plsDontProc-Scripts/archive/refs/heads/main.zip),
+extract it, and keep all files together. Start with **`clean-json.bat`**, then
+use **`clean-full-log.bat`** if you want continuous synchronization.
 
-Source: [JSON helper](limpar-json.ps1) · [FullLogger helper](limpar-full-log.ps1) ·
+Source: [JSON helper](clean-json.ps1) · [FullLogger helper](clean-full-log.ps1) ·
 [Shared allowlists](privacy-common.ps1) · [MIT license](LICENSE).
 
 Two open-source, offline Windows tools that prepare copies **before** you give
@@ -19,7 +19,7 @@ download and readable source links. Nothing runs automatically in `iniciar-dev`.
 
 ## 1. Create a filtered JSON and a fictitious identity
 
-1. Open `limpar-json.bat`, or drag a SWEX JSON onto it.
+1. Open `clean-json.bat`, or drag a SWEX JSON onto it.
 2. Select the original JSON in the script's own picker.
 3. Enter a fictitious account name (1–48 characters) and a fictitious positive
    numeric ID (up to 9007199254740991, different from your real account ID).
@@ -44,7 +44,7 @@ file belonging to another real account. Import the newly generated copy manually
 ## 2. Keep a filtered FullLogger copy updated
 
 1. Enable FullLogger in SWEX.
-2. Open `limpar-full-log.bat` (or drop the original `full_log.txt` onto it).
+2. Open `clean-full-log.bat` (or drop the original `full_log.txt` onto it).
 3. Choose the original log and the `.identity.json` created in step 1.
 4. The helper creates **`plsdontproc-full_log.txt`** beside the identity file.
 5. In the app, disconnect any previously selected original log, load the filtered
@@ -123,13 +123,13 @@ updates and support features can use the network.
 
 ```powershell
 # New identity; output names are chosen safely if not specified.
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\limpar-json.ps1 -InputPath "C:\exports\account.json" -FakeName "Private Player" -FakeId 700001 -NonInteractive
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\clean-json.ps1 -InputPath "C:\exports\account.json" -FakeName "Private Player" -FakeId 700001 -NonInteractive
 
 # Another export for the same fictitious identity.
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\limpar-json.ps1 -InputPath "C:\exports\account.json" -IdentityPath "C:\exports\plsdontproc-clean.identity.json" -NonInteractive
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\clean-json.ps1 -InputPath "C:\exports\account.json" -IdentityPath "C:\exports\plsdontproc-clean.identity.json" -NonInteractive
 
 # Continuous log copy (Ctrl+C stops it).
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\limpar-full-log.ps1 -InputPath "C:\exports\full_log.txt" -IdentityPath "C:\exports\plsdontproc-clean.identity.json" -OutputPath "C:\filtered\public-log.txt" -NonInteractive
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\clean-full-log.ps1 -InputPath "C:\exports\full_log.txt" -IdentityPath "C:\exports\plsdontproc-clean.identity.json" -OutputPath "C:\filtered\public-log.txt" -NonInteractive
 ```
 
 `-OutputPath` must name a new file with the appropriate extension in an existing
@@ -139,8 +139,8 @@ Organization-managed machines may have their own script restrictions.
 
 ## Review and tests
 
-- `limpar-json.ps1` / `.bat`: JSON picker, fictitious identity, new export.
-- `limpar-full-log.ps1` / `.bat`: original log picker and continuous filtered copy.
+- `clean-json.ps1` / `.bat`: JSON picker, fictitious identity, new export.
+- `clean-full-log.ps1` / `.bat`: original log picker and continuous filtered copy.
 - `privacy-common.ps1`: allowlists, identity validation, event/account selection.
 - `LICENSE`: MIT license covering these tools.
 
