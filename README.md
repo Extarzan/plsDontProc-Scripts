@@ -15,7 +15,7 @@ They do not contact any server, install a service or launch the application.
 Keep every file from the ZIP together. Read the `.ps1` and `.bat` files with a
 text editor before executing them. All tools and the common code use the MIT
 license in `LICENSE`. The app's Home has **I don't trust this app**, with this
-download and readable source links. Nothing runs automatically in `iniciar-dev`.
+download and readable source links.
 
 ## 1. Create a filtered JSON and a fictitious identity
 
@@ -140,14 +140,9 @@ directory. Existing files and originals are refused. The execution-policy option
 applies only to that PowerShell process; it does not change Windows settings.
 Organization-managed machines may have their own script restrictions.
 
-## Review and tests
+## Source files
 
 - `clean-json.ps1` / `.bat`: JSON picker, fictitious identity, new export.
 - `clean-full-log.ps1` / `.bat`: original log picker and continuous filtered copy.
 - `privacy-common.ps1`: allowlists, identity validation, event/account selection.
 - `LICENSE`: MIT license covering these tools.
-
-From the full project: `python -m unittest tests.test_json_cleaner tests.test_private_log tests.test_privacy_tools`.
-Tests use fictitious data, verify original bytes stay intact, check session/name/ID
-removal and large equipment IDs, compare calculations, exercise split log writes
-and rotation, and synchronize the real app from only the filtered copies.
