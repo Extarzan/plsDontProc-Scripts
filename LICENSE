@@ -1,5 +1,10 @@
 MIT License
 
+Scope: this license covers only the standalone privacy scripts
+(clean-json.ps1, clean-json.bat, clean-full-log.ps1, clean-full-log.bat,
+privacy-common.ps1) and their documentation in this directory.
+It does not apply to the plsDontProc application, its source code or its assets.
+
 Copyright (c) 2026 Extarzan
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

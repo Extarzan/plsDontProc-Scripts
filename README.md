@@ -1,11 +1,30 @@
 # plsDontProc Privacy Tools
 
+plsDontProc processes your SWEX data locally. It does not upload your SWEX files
+or send your account information over the internet. All account and gameplay
+data it reads comes from SWEX exports and optional FullLogger files, including
+obfuscated copies you choose to import. The app does not access your game account
+or require the game to be installed. You can copy the files to a computer that
+has never accessed the game or your account and optimize entirely offline.
+Live synchronization needs updated log files. Update checks and online help or
+support features use the internet without uploading your account files.
+
+These scripts are **optional tools for obfuscating your own input files**. They
+show how to remove unused fields and replace your account name and ID before
+importing a JSON or log into the app. You can inspect and modify the scripts,
+write your own, or edit the JSON yourself while preserving the required structure
+and inventory fields. The app processes the data locally with or without them.
+
+**The MIT license applies only to the standalone privacy scripts and their
+documentation. It does not apply to the plsDontProc application, its source code
+or its assets. Publishing these scripts does not make the application open source.**
+
 [Download the complete ZIP](https://github.com/Extarzan/plsDontProc-Scripts/archive/refs/heads/main.zip),
 extract it, and keep all files together. Start with **`clean-json.bat`**, then
 use **`clean-full-log.bat`** if you want continuous synchronization.
 
 Source: [JSON helper](clean-json.ps1) · [FullLogger helper](clean-full-log.ps1) ·
-[Shared allowlists](privacy-common.ps1) · [MIT license](LICENSE).
+[Shared allowlists](privacy-common.ps1) · [MIT license — scripts only](LICENSE).
 
 Two open-source, offline Windows tools that prepare copies **before** you give
 files to plsDontProc. The originals are never modified. The tools need only
@@ -158,4 +177,4 @@ Organization-managed machines may have their own script restrictions.
 - `clean-json.ps1` / `.bat`: JSON picker, fictitious identity, new export.
 - `clean-full-log.ps1` / `.bat`: original log picker and continuous filtered copy.
 - `privacy-common.ps1`: allowlists, identity validation, event/account selection.
-- `LICENSE`: MIT license covering these tools.
+- `LICENSE`: MIT license covering only these scripts and their documentation, not the app.
