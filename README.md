@@ -105,6 +105,7 @@ This is a filtered inventory stream, not a complete archival copy of FullLogger.
 | Fictitious account name and ID | Match JSON and log; separate saved account configurations. |
 | Export/event timestamps; successful command/result markers | Keep updates ordered and reject older exports. |
 | Mana, crystals, energy | Account counters. |
+| Purchased rune inventory expansions (`wizard_extra_data.rune_slot`) | Rune inventory capacity: 1600 base slots plus 20 per expansion. |
 | Monster species and instance IDs; equipped runes/artifacts | Builds, exact monster bindings and inventory ownership. |
 | Rune IDs, owner, set, slot, stars, rarity, level and numeric effects | Equipment, scores, rankings and optimization. |
 | Artifact IDs, owner, type, family, levels and numeric effects | Artifact inventory, equipment and calculations. |
@@ -117,6 +118,10 @@ The account ID is replaced. **Monster and equipment IDs are preserved**, includi
 large integers, because changing them would break bindings and event matching.
 Inventory and timestamps can still be distinctive; this is data minimization
 and a fictitious account identity, not a claim of complete anonymity.
+
+Older copies removed `wizard_extra_data`. Generate a new copy from the original
+JSON with the same identity file to restore the account's rune capacity. The
+original file is never overwritten.
 
 `privacy-common.ps1` defines the allowlists used by both entry scripts. Unknown
 fields are removed recursively. Session/login credentials, device identifiers,

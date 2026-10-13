@@ -8,6 +8,7 @@ $ErrorActionPreference = 'Stop'
 $Schemas = @{
     export = [ordered]@{
         wizard_info = 'wizard'; tvalue = 'number'
+        wizard_extra_data = 'wizard-extra'
         runes = 'rune[]'; unit_list = 'unit[]'; unit_storage_normal_list = 'unit[]'
         artifacts = 'artifact[]'; rune_lock_list = 'lock[]'
         world_arena_rune_equip_list = 'rta-rune[]'
@@ -15,6 +16,7 @@ $Schemas = @{
         rune_craft_item_list = 'material[]'; deck_list = 'deck[]'
         wizard_skill_list = 'skill-levels'; guild = 'guild'
     }
+    'wizard-extra' = [ordered]@{ rune_slot = 'integer' }
     wizard = [ordered]@{
         wizard_id = 'integer'
         wizard_mana = 'integer'; wizard_crystal = 'integer'; wizard_energy = 'integer'
@@ -158,6 +160,10 @@ function Copy-Allowed($Value, [string]$Rule, [string]$Location) {
         return ,(Copy-Effect $Value $Rule $Location)
     }
     if ($Rule -eq 'skill-levels') { return Copy-SkillLevels $Value $Location }
+    # The game serializes extra data as [] when no inventory expansion exists.
+    if ($Rule -eq 'wizard-extra' -and $Value -is [array] -and $Value.Count -eq 0) {
+        return [ordered]@{}
+    }
     if (-not $Schemas.ContainsKey($Rule)) { throw 'Regra interna desconhecida.' }
     if ($Value -isnot [System.Management.Automation.PSCustomObject]) {
         throw "Esperado um objeto em $Location."
